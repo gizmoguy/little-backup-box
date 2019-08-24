@@ -133,11 +133,43 @@ do_backup() {
     rsync -avP "${SOURCE_PATH}/" "${DESTINATION_PATH}/${UUID}"
 }
 
+wait_for_umount() {
+    local path=$1
+    shift
+
+    if ! mountpoint -q "$path"; then
+        return 0
+    fi
+
+    echo -n "Unmounting $path"
+
+    local trys=0
+    while true; do
+        trys=$((trys+1))
+
+        if [ "$trys" -gt 10 ]; then
+            break
+        fi
+
+        if mountpoint -q "$path"; then
+            sync
+            if umount "$path" 2> /dev/null; then
+                break
+            else
+               echo -n '.'
+               sleep 10
+            fi
+        else
+            break
+        fi
+    done
+
+    echo ""
+}
+
 unmount_fs() {
-    # Be extra careful and run a few syncs
-    sync && mountpoint -q "${DESTINATION_PATH}" && umount "${DESTINATION_PATH}"
-    sync && mountpoint -q "${SOURCE_PATH}" && umount "${SOURCE_PATH}"
-    sync
+    wait_for_umount "${DESTINATION_PATH}"
+    wait_for_umount "${SOURCE_PATH}"
 }
 
 if [[ $EUID -ne 0 ]]; then
