@@ -83,7 +83,7 @@ mount_filesystems() {
 
             if [ "$fs_label" == "EOS_DIGITAL" ]; then
                 if [ "$fs_fstype" == "vfat" -o "$fs_fstype" == "exfat" ]; then
-                    if [ "$source_dev" -ne "$fs_name" ]; then
+                    if [ "$source_dev" != "$fs_name" ]; then
                         echo "Found a canon SD card ($fs_model) at $fs_name"
                         source_dev=$fs_name
                         source_uuid=$fs_uuid
@@ -93,7 +93,7 @@ mount_filesystems() {
                 fi
             elif [ "$fs_fstype" == "ntfs" ]; then
                 if [ "$fs_size" -ge "$DESTINATION_MIN_SIZE" ]; then
-                    if [ "$destination_dev" -ne "$fs_name" ]; then
+                    if [ "$destination_dev" != "$fs_name" ]; then
                         echo "Found a USB hard drive ($fs_model) to backup to at $fs_name"
                         destination_dev=$fs_name
                     fi
