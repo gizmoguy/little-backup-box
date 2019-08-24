@@ -22,9 +22,9 @@ fi
 
 echo "Updating the system..."
 
-apt-get update -qq >/dev/null
-apt-get dist-upgrade -y -qq >/dev/null
-apt-get install jq rsync exfat-fuse exfat-utils ntfs-3g php-cli minidlna samba samba-common-bin -y >/dev/null
+DEBIAN_FRONTEND=noninteractive apt-get update -qq >/dev/null
+DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y -qq >/dev/null
+DEBIAN_FRONTEND=noninteractive apt-get install jq rsync exfat-fuse exfat-utils ntfs-3g php-cli minidlna samba samba-common-bin -y >/dev/null
 
 echo "Install web interface..."
 rsync -a www/ /var/www/
