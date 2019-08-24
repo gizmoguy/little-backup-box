@@ -1,0 +1,8 @@
+[Unit]
+Description="Backup SD card to hard drive"
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/usr/local/bin/do-backup.sh

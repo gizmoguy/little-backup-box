@@ -38,6 +38,14 @@
 	    <a href="/"><img src="logo.svg" height="51px" alt="Little Backup Box"></a>
             <h2>Little Backup Box</h2>
             <p><?php echo L::sysinfo_hed; ?></p>
+	    <h2><?php echo L::log_lbl; ?></h2>
+	    <div style="display: inline-block; text-align: left;">
+		<?php
+		echo '<pre>';
+		passthru("journalctl -u little-backup-box");
+		echo '</pre>';
+		?>
+	    </div>
 	    <h2>Devices</h2>
 	    <div style="display: inline-block; text-align: left;">
 		<?php

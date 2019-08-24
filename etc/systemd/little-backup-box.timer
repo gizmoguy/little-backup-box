@@ -1,0 +1,10 @@
+[Unit]
+Description="Kick off backup 30 seconds after boot"
+
+[Timer]
+Unit=little-backup-box.service
+OnBootSec=30s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

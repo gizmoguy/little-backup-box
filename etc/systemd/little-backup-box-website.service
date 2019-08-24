@@ -1,0 +1,13 @@
+[Unit]
+Description="Little Backup Box Web Interface"
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/
+ExecStart=/usr/bin/php -S 0.0.0.0:80
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
