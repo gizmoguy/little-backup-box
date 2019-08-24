@@ -69,6 +69,7 @@ mount_filesystems() {
             local fs_mountpoint=$(echo $fs | jq -r '.mountpoint')
             local fs_size=$(echo $fs | jq -r '.size')
             local fs_pkname=$(echo $fs | jq -r '.pkname')
+            local fs_vendor=$(cat /sys/block/${fs_pkname#*/dev/}/device/vendor 2>/dev/null | awk '{$1=$1};1')
             local fs_model=$(cat /sys/block/${fs_pkname#*/dev/}/device/model 2>/dev/null | awk '{$1=$1};1')
 
             if [ "$fs_type" != "part" ]; then
@@ -84,7 +85,7 @@ mount_filesystems() {
             if [ "$fs_label" == "EOS_DIGITAL" ]; then
                 if [ "$fs_fstype" == "vfat" -o "$fs_fstype" == "exfat" ]; then
                     if [ "$source_dev" != "$fs_name" ]; then
-                        echo "Found a canon SD card ($fs_model) at $fs_name"
+                        echo "Found a canon SD card ($fs_vendor $fs_model) at $fs_name"
                         source_dev=$fs_name
                         source_uuid=$fs_uuid
                     fi
@@ -94,7 +95,7 @@ mount_filesystems() {
             elif [ "$fs_fstype" == "ntfs" ]; then
                 if [ "$fs_size" -ge "$DESTINATION_MIN_SIZE" ]; then
                     if [ "$destination_dev" != "$fs_name" ]; then
-                        echo "Found a USB hard drive ($fs_model) to backup to at $fs_name"
+                        echo "Found a USB hard drive ($fs_vendor $fs_model) to backup to at $fs_name"
                         destination_dev=$fs_name
                     fi
                 else
