@@ -69,7 +69,7 @@ mount_filesystems() {
             local fs_mountpoint=$(echo $fs | jq -r '.mountpoint')
             local fs_size=$(echo $fs | jq -r '.size')
             local fs_pkname=$(echo $fs | jq -r '.pkname')
-            local fs_model=$(cat /sys/block/${fs_pkname}/device/model)
+            local fs_model=$(cat /sys/block/${fs_pkname#*/dev/}/device/model 2>/dev/null)
 
             if [ "$fs_type" != "part" ]; then
                 debug "Skipping $fs_name because it as $fs_type"
