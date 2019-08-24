@@ -138,7 +138,9 @@ fi
 trigger_led 1000
 
 # Shutdown after a specified period of time (in minutes) if no device is connected.
-shutdown -h ${GIVE_UP_TIME} "Shutdown is activated. To cancel: sudo shutdown -c"
+if [ "$SHUTDOWN" -eq 1 ]; then
+    shutdown -h ${GIVE_UP_TIME} "Shutdown is activated. To cancel: sudo shutdown -c"
+fi
 
 # Wait for a USB storage devices
 echo "Waiting for SD card and hard drive to be plugged in"
@@ -146,7 +148,9 @@ UUID=""
 mount_filesystems
 
 # Cancel shutdown
-shutdown -c
+if [ "$SHUTDOWN" -eq 1 ]; then
+    shutdown -c
+fi
 
 # Set the ACT LED to blink at 500ms to indicate that the backup has begun
 trigger_led 10
