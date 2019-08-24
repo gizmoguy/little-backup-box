@@ -19,6 +19,7 @@ GIVE_UP_TIME=10                                    # automatically shutdown afte
 DESTINATION_MIN_SIZE=$((32 * 1024 * 1024 * 1024))  # minimum size (in bytes) that we will accept as a valid backup destination
 SOURCE_PATH="/mnt/source"                          # where should we mount the sd card?
 DESTINATION_PATH="/mnt/destination"                # where should we mount the backup destination?
+SHUTDOWN=0                                         # should we shutdown the system when we finish?
 VERBOSE=0                                          # set to 1 for additional logging
 
 
@@ -159,4 +160,6 @@ echo "Backup finished"
 unmount_fs
 
 # Shutdown
-shutdown -h now
+if [ "$SHUTDOWN" -eq 1 ]; then
+    shutdown -h now
+fi
