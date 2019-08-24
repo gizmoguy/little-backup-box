@@ -37,12 +37,12 @@ trigger_led() {
     shift
 
     case "$mode" in
-        heartbeat)
-            echo heartbeat > /sys/class/leds/led0/trigger
-            ;;
         [0-9]*)
             echo timer > /sys/class/leds/led0/trigger
             echo $mode > /sys/class/leds/led0/delay_on
+            ;;
+        *)
+            echo $mode > /sys/class/leds/led0/trigger
             ;;
     esac
 }
