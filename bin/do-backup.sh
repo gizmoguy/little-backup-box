@@ -23,6 +23,17 @@ SHUTDOWN=0                                         # should we shutdown the syst
 VERBOSE=0                                          # set to 1 for additional logging
 
 
+cleanup() {
+    rc=$?
+
+    trap - ERR TERM HUP INT QUIT EXIT
+
+    unmount_fs
+    trigger_led mmc0
+
+    exit $rc
+}
+
 debug() {
     local msg=$1
     shift
@@ -124,8 +135,8 @@ do_backup() {
 
 unmount_fs() {
     # Be extra careful and run a few syncs
-    sync && umount "${DESTINATION_PATH}"
-    sync && umount "${SOURCE_PATH}"
+    sync && mountpoint -q "${DESTINATION_PATH}" && umount "${DESTINATION_PATH}"
+    sync && mountpoint -q "${SOURCE_PATH}" && umount "${SOURCE_PATH}"
     sync
 }
 
@@ -133,6 +144,8 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root (sudo $0)"
    exit 1
 fi
+
+trap cleanup ERR TERM HUP INT QUIT EXIT
 
 # Set the ACT LED to heartbeat
 trigger_led 1000
