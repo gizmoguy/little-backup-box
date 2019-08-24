@@ -68,7 +68,8 @@ mount_filesystems() {
             local fs_uuid=$(echo $fs | jq -r '.uuid')
             local fs_mountpoint=$(echo $fs | jq -r '.mountpoint')
             local fs_size=$(echo $fs | jq -r '.size')
-            local fs_subsystems=$(echo $fs | jq -r '.subsystems')
+            local fs_pkname=$(echo $fs | jq -r '.pkname')
+            local fs_model=$(cat /sys/block/${fs_pkname}/device/model)
 
             if [ "$fs_type" != "part" ]; then
                 debug "Skipping $fs_name because it as $fs_type"
@@ -83,7 +84,7 @@ mount_filesystems() {
             if [ "$fs_label" == "EOS_DIGITAL" ]; then
                 if [ "$fs_fstype" == "vfat" -o "$fs_fstype" == "exfat" ]; then
                     if [ "$source_dev" -ne "$fs_name" ]; then
-                        echo "Found a canon SD card at $fs_name"
+                        echo "Found a canon SD card ($fs_model) at $fs_name"
                         source_dev=$fs_name
                         source_uuid=$fs_uuid
                     fi
@@ -93,7 +94,7 @@ mount_filesystems() {
             elif [ "$fs_fstype" == "ntfs" ]; then
                 if [ "$fs_size" -ge "$DESTINATION_MIN_SIZE" ]; then
                     if [ "$destination_dev" -ne "$fs_name" ]; then
-                        echo "Found a USB hard drive to backup to at $fs_name"
+                        echo "Found a USB hard drive ($fs_model) to backup to at $fs_name"
                         destination_dev=$fs_name
                     fi
                 else
@@ -101,7 +102,7 @@ mount_filesystems() {
                 fi
             fi
 
-        done <<<$(lsblk -n -l -p -b -J -o NAME,TYPE,FSTYPE,LABEL,UUID,MOUNTPOINT,SIZE,SUBSYSTEMS | jq -c ".blockdevices[]")
+        done <<<$(lsblk -n -l -p -b -J -o NAME,TYPE,FSTYPE,LABEL,UUID,MOUNTPOINT,SIZE,PKNAME | jq -c ".blockdevices[]")
 
         sleep 1
     done
