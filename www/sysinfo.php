@@ -50,7 +50,7 @@
 	    <div style="display: inline-block; text-align: left;">
 		<?php
 		echo '<pre>';
-		passthru("lsblk");
+		passthru("lsblk -o NAME,TYPE,SIZE,FSTYPE,LABEL,MOUNTPOINT");
 		echo '</pre>';
 		?>
 	    </div>
