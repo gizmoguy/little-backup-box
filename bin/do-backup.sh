@@ -123,7 +123,7 @@ mount_filesystems() {
     # Mount our filesystems
     mkdir -p "${SOURCE_PATH}"
     mkdir -p "${DESTINATION_PATH}"
-    mount ${source_dev} ${SOURCE_PATH}
+    mount -o ro ${source_dev} ${SOURCE_PATH}
     mount ${destination_dev} ${DESTINATION_PATH}
 
     UUID="$source_uuid"
