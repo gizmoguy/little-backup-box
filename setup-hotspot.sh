@@ -27,6 +27,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install dnsmasq hostapd haveged -y >/dev/
 
 echo "Configuring network..."
 cp etc/network/wlan0 /etc/network/interfaces.d/
+ifup wlan0
 
 echo "Configuring dnsmasq..."
 cp etc/dnsmasq/hotspot /etc/dnsmasq.d/
