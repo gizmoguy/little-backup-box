@@ -1,0 +1,7 @@
+interface=wlan0
+
+domain=lbb
+address=/pi/192.168.1.1
+address=/pi.lbb/192.168.1.1
+
+dhcp-range=192.168.1.2,192.168.1.200,255.255.255.0,24h
