@@ -39,3 +39,9 @@ sed -i 's/#DAEMON_CONF=""/DAEMON_CONF="\/etc\/hostapd\/hostapd.conf"/' /etc/defa
 systemctl unmask hostapd
 systemctl enable hostapd
 systemctl restart hostapd
+
+echo "Configuring dhcpcd..."
+if ! grep "denyinterfaces wlan0" /etc/dhcpcd.conf >/dev/null; then
+    echo "denyinterfaces wlan0" >> /etc/dhcpcd.conf
+fi
+systemctl restart dhcpcd
