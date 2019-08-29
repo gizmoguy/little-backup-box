@@ -36,6 +36,6 @@ systemctl restart dnsmasq
 echo "Configuring hostapd..."
 cp etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
 sed -i 's/#DAEMON_CONF=""/DAEMON_CONF="\/etc\/hostapd\/hostapd.conf"/' /etc/default/hostapd
-sudo systemctl unmask hostapd
-sudo systemctl enable hostapd
-sudo systemctl restart hostapd
+systemctl unmask hostapd
+systemctl enable hostapd
+systemctl restart hostapd
